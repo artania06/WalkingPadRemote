@@ -48,6 +48,7 @@ const treadmillModule = {
     distance: 0,
     steps: 0,
     updateTimer: null,
+    restartTimer: null,
   },
   getters: {
     speed(state) {
@@ -135,7 +136,7 @@ const treadmillModule = {
     },
     requestData(context) {
       const command = buildCommand(REQUEST_DATA_CMD, 0x00);
-      context.state.writeCharacteristic?.writeValueWithoutResponse(command).then(() => {}, () => {
+      context.state.writeCharacteristic?.writeValueWithoutResponse(command).then(() => { }, () => {
         context.commit('clearTimer');
         context.dispatch('alert/pushToast', {
           message: 'Connection lost, refreshing...',
