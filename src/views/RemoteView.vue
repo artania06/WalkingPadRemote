@@ -70,12 +70,19 @@ export default {
       this.speed -= 5;
     },
     speedUp() {
-      if (this.speed === 60) return;
       this.speed += 5;
     },
     stop() {
+      if (this.$store.state.treadmill.restartTimer) {
+        clearInterval(this.$store.state.treadmill.restartTimer);
+        this.$store.state.treadmill.restartTimer = null;
+      }
       if (this.speed !== 0) {
         this.speed = 0;
+        const self = this;
+        this.$store.state.treadmill.restartTimer = setInterval(() => {
+          self.speed = 45;
+        }, 60 * 1000);
       } else {
         this.startBelt();
       }
@@ -85,22 +92,25 @@ export default {
 </script>
 
 <style scoped>
-  ons-page, ons-segment, #speedControl, #infos {
-    width: 100%;
-  }
+ons-page,
+ons-segment,
+#speedControl,
+#infos {
+  width: 100%;
+}
 
-  div.content.page__content {
-    text-align: center;
-    padding: 2em;
-  }
+div.content.page__content {
+  text-align: center;
+  padding: 2em;
+}
 
-  #speedControl {
-    margin-top: 3em;
-  }
+#speedControl {
+  margin-top: 3em;
+}
 
-  #infos {
-    text-align: center;
-    position: fixed;
-    bottom: 2em;
-  }
+#infos {
+  text-align: center;
+  position: fixed;
+  bottom: 2em;
+}
 </style>
